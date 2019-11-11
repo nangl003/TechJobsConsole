@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 
 namespace TechJobsConsole
 {
@@ -52,6 +53,34 @@ namespace TechJobsConsole
                 if (aValue.Contains(value))
                 {
                     jobs.Add(row);
+                }
+            }
+
+            return jobs;
+        }
+
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> listing in AllJobs)
+            {
+                bool valueExistsInRow = false;
+
+                foreach (KeyValuePair<string,string> kvp in listing)
+                {
+                    if (kvp.Value.ToUpper().Contains(value.ToUpper()))
+                    {
+                        valueExistsInRow = true;
+                    }
+                }
+
+                if (valueExistsInRow == true)
+                {
+                    jobs.Add(listing);
                 }
             }
 
